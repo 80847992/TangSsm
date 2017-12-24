@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuxiao.tang.dao.IPoetsDao">
+    <select id="getList" resultType="com.wuxiao.tang.entity.Poet">
+        SELECT * FROM poets limit #{arg0},#{arg1}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT count(*) FROM poets
+    </select>
+    <select id="getAll" resultType="com.wuxiao.tang.entity.Poet">
+        SELECT * FROM poets
+    </select>
+</mapper>

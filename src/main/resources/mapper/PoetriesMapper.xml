@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuxiao.tang.dao.IPoetriesDao">
+    <resultMap id="PoetryMap" type="com.wuxiao.tang.entity.Poetry">
+        <result property="id" column="id" />
+        <result property="content" column="content" />
+        <result property="title" column="title" />
+        <result property="created_at" column="created_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result property="updated_at" column="updated_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <association property="poet" column="poet_id" javaType="com.wuxiao.tang.entity.Poet">
+            <id property="id" column="poets.id" />
+            <result property="name" column="name" />
+        </association>
+    </resultMap>
+    <select id="get" parameterType="int" resultMap="PoetryMap">
+        SELECT * FROM poetries py left join poets p on py.poet_id=p.id WHERE py.id = #{id}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT count(*) FROM poetries py left join poets p on py.poet_id=p.id
+        where 1=1
+        <if test="arg0 !=null ">
+            and p.name LIKE CONCAT('%',#{arg0},'%')
+        </if>
+        <if test="arg1 !=null ">
+            and title LIKE CONCAT('%',#{arg1},'%')
+        </if>
+        <if test="arg2 !=null ">
+            and content LIKE CONCAT('%',#{arg2},'%')
+        </if>
+    </select>
+    <select id="getList" resultMap="PoetryMap">
+        SELECT * FROM poetries py left join poets p on py.poet_id=p.id
+        limit #{arg0},#{arg1}
+    </select>
+    <select id="searchList" resultMap="PoetryMap">
+        SELECT * FROM poetries py left join poets p on py.poet_id=p.id
+        where 1=1
+        <if test="arg0 !=null ">
+            and p.name LIKE CONCAT('%',#{arg0},'%')
+        </if>
+        <if test="arg1 !=null ">
+            and title LIKE CONCAT('%',#{arg1},'%')
+        </if>
+        <if test="arg2 !=null ">
+            and content LIKE CONCAT('%',#{arg2},'%')
+        </if>
+        limit #{arg3},#{arg4}
+    </select>
+</mapper>
